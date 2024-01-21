@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+#Files
+database.sqlite
+didKey.json
+didPeer.json
+didWeb.json
