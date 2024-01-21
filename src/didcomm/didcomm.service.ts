@@ -20,7 +20,7 @@ export class VeramoAgentService {
                 console.error("Failed to unpack message: ", packedMessage);
                 return { error: "Error unpacking the message!" };
             }
-            const data = unpackedMessage.message.attachments[0].data.json;
+            const data = unpackedMessage?.message?.attachments[0]?.data?.json
             const packedMessageToForward = {
                 message: `${JSON.stringify(data)}`
             }
@@ -31,7 +31,7 @@ export class VeramoAgentService {
                 packedMessage: packedMessageToForward,
                 recipientDidUrl: unpackedMessage.message.body.next,
             });
-            console.log("response", response)
+            console.log("Message Forwarded", response)
             return;
         } catch (error) {
             console.error("Error processing message: ", error);
