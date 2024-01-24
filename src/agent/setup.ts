@@ -48,7 +48,9 @@ export async function createVeramoAgent(kmsSecretKey: string, fileName: string) 
   const DIDCommEventSniffer: IEventListener = {
     eventTypes: ['DIDCommV2Message-sent', 'DIDCommV2Message-received', 'DIDCommV2Message-forwarded'],
     onEvent: async (event) => {
+      // console.log('Event Logged:', event, 'data.message.body', event.data.message.body);
       console.log('Event Logged:', event);
+      //console.log('Event Logged:', event.type);
       // Add your custom logic here
     },
   };
@@ -97,6 +99,7 @@ export async function createVeramoAgent(kmsSecretKey: string, fileName: string) 
             new CoordinateMediationMediatorMessageHandler(),
             new CoordinateMediationRecipientMessageHandler(),
             new RoutingMessageHandler(),
+            // new TrustPingMessageHandler()
           ],
         }),
         new DataStore(dbConnection),

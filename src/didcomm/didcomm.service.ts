@@ -15,7 +15,10 @@ export class VeramoAgentService {
         try {
             const app = await NestFactory.create(AppModule);
             const veramoAgent = app.get('VERAMO_AGENT');
+            const unpackedMessageNew = await veramoAgent.handleMessage({ raw: packedMessage.message })
+            console.log("unpackedMessageNew", unpackedMessageNew)
             const unpackedMessage = await veramoAgent.unpackDIDCommMessage(packedMessage);
+            console.log("unpackedMessage", unpackedMessage)
             if (!unpackedMessage) {
                 console.error("Failed to unpack message: ", packedMessage);
                 return { error: "Error unpacking the message!" };
@@ -24,12 +27,19 @@ export class VeramoAgentService {
             const packedMessageToForward = {
                 message: `${JSON.stringify(data)}`
             }
+
+            // const packedMessageToForward = {
+            //     message: `${JSON.stringify(unpackedMessageNew.raw)}`
+            // }
+            //console.log("unpackedMessageNew.metaData", unpackedMessageNew.raw)
+            console.log("packedMessageToForward", packedMessageToForward)
             // Forward the message
             const msgId = v4()
             const response = await veramoAgent.sendDIDCommMessage({
                 messageId: msgId,
                 packedMessage: packedMessageToForward,
                 recipientDidUrl: unpackedMessage.message.body.next,
+                // recipientDidUrl: unpackedMessageNew.data.next
             });
             console.log("Message Forwarded", response)
             return;
